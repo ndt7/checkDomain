@@ -13,7 +13,7 @@ def next_domain(domain):
 def generate_domains(nr_domains, seed='hereisaseeddomainthatweuse.com'):
     ret = []
 
-    for i in range(nr_domains):
+    for i in range(int(nr_domains)):
         seed = next_domain(seed)
 
         ret.append(seed)

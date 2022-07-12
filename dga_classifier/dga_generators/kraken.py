@@ -49,7 +49,6 @@ def generate_domain(index, date, seed_set, temp_file=True, tld_set_nr=1):
         domain += "." + tlds[domain_nr % 4]
     return domain
 
-
 def generate_domains(num_domains, date, seed, tld_set):
     domains = []
     for i in range(num_domains):

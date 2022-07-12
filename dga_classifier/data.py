@@ -18,12 +18,15 @@ ALEXA_1M = 'http://s3.amazonaws.com/alexa-static/top-1m.csv.zip'
 # Our ourput file containg all the training data
 DATA_FILE = 'traindata.pkl'
 
+
+# phân tách dữ liệu
 def get_alexa(num, address=ALEXA_1M, filename='top-1m.csv'):
     """Grabs Alexa 1M"""
     url = urlopen(address)
     zipfile = ZipFile(StringIO(url.read()))
-    return [tldextract.extract(x.split(',')[1]).domain for x in \
+    return [tldextract.extract(x.split(',')[1]).domain for x in
             zipfile.read(filename).split()[:num]]
+
 
 def gen_malicious(num_per_dga=10000):
     """Generates num_per_dga of each DGA"""
@@ -31,6 +34,7 @@ def gen_malicious(num_per_dga=10000):
     labels = []
 
     # We use some arbitrary seeds to create domains with banjori
+    # Chúng tôi sử dụng một số hạt giống tùy ý để tạo tên miền với banjori
     banjori_seeds = ['somestring', 'firetruck', 'bulldozer', 'airplane', 'racecar',
                      'apartment', 'laptop', 'laptopcomp', 'malwareisbad', 'crazytrain',
                      'thepolice', 'fivemonkeys', 'hockey', 'football', 'baseball',
@@ -46,6 +50,9 @@ def gen_malicious(num_per_dga=10000):
     segs_size = max(1, num_per_dga/len(banjori_seeds))
     for banjori_seed in banjori_seeds:
         domains += banjori.generate_domains(segs_size, banjori_seed)
+
+        # thu vien //
+        # fix bug https://www.freecodecamp.org/news/typeerror-cant-multiply-sequence-by-non-int-of-type-float-solved/
         labels += ['banjori']*segs_size
 
     domains += corebot.generate_domains(num_per_dga)
@@ -56,18 +63,21 @@ def gen_malicious(num_per_dga=10000):
     segs_size = max(1, num_per_dga/len(crypto_lengths))
     for crypto_length in crypto_lengths:
         domains += cryptolocker.generate_domains(segs_size,
-                                                 seed_num=random.randint(1, 1000000),
+                                                 seed_num=random.randint(
+                                                     1, 1000000),
                                                  length=crypto_length)
-        labels += ['cryptolocker']*segs_size
+        labels += ['cryptolocker'] * segs_size
 
     domains += dircrypt.generate_domains(num_per_dga)
     labels += ['dircrypt']*num_per_dga
 
     # generate kraken and divide between configs
     kraken_to_gen = max(1, num_per_dga/2)
-    domains += kraken.generate_domains(kraken_to_gen, datetime(2016, 1, 1), 'a', 3)
+    domains += kraken.generate_domains(kraken_to_gen,
+                                       datetime(2016, 1, 1), 'a', 3)
     labels += ['kraken']*kraken_to_gen
-    domains += kraken.generate_domains(kraken_to_gen, datetime(2016, 1, 1), 'b', 3)
+    domains += kraken.generate_domains(kraken_to_gen,
+                                       datetime(2016, 1, 1), 'b', 3)
     labels += ['kraken']*kraken_to_gen
 
     # generate locky and divide between configs
@@ -109,6 +119,7 @@ def gen_malicious(num_per_dga=10000):
 
     return domains, labels
 
+
 def gen_data(force=False):
     """Grab all data for train/test and save
 
@@ -124,7 +135,9 @@ def gen_data(force=False):
 
         pickle.dump(zip(labels, domains), open(DATA_FILE, 'w'))
 
-# load data // lay du lieu 
+# load data // lay du lieu
+
+
 def get_data(force=False):
     """Returns data and labels"""
     gen_data(force)

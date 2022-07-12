@@ -22,6 +22,7 @@ def run_experiments(isbigram=True, islstm=True, nfolds=10):
 # de so sanh bigram va lstm 
     if isbigram:
         #chay ham run trong bigram 
+        
         bigram_results = bigram.run(nfolds=nfolds)
 
     if islstm:
