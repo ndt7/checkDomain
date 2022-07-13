@@ -1,4 +1,5 @@
 """Generates data for train/test algorithms"""
+import io
 from datetime import datetime
 from io import StringIO
 from urllib.request import urlopen
@@ -19,11 +20,12 @@ ALEXA_1M = 'http://s3.amazonaws.com/alexa-static/top-1m.csv.zip'
 DATA_FILE = 'traindata.pkl'
 
 
-# phân tách dữ liệu
 def get_alexa(num, address=ALEXA_1M, filename='top-1m.csv'):
-    """Grabs Alexa 1M"""
+    """Grabs Alexa 1M - ban du lieu Alexa 1 trieu domain pho bien tren the gioi"""
     url = urlopen(address)
-    zipfile = ZipFile(StringIO(url.read()))
+    zipfile = ZipFile(io.StringIO(url.read()))
+
+    # zipfile = ZipFile(ALEXA_1M)
     return [tldextract.extract(x.split(',')[1]).domain for x in
             zipfile.read(filename).split()[:num]]
 
@@ -53,7 +55,7 @@ def gen_malicious(num_per_dga=10000):
 
         # thu vien //
         # fix bug https://www.freecodecamp.org/news/typeerror-cant-multiply-sequence-by-non-int-of-type-float-solved/
-        labels += ['banjori']*segs_size
+        labels += ['banjori']*int(segs_size)
 
     domains += corebot.generate_domains(num_per_dga)
     labels += ['corebot']*num_per_dga
@@ -66,7 +68,7 @@ def gen_malicious(num_per_dga=10000):
                                                  seed_num=random.randint(
                                                      1, 1000000),
                                                  length=crypto_length)
-        labels += ['cryptolocker'] * segs_size
+        labels += ['cryptolocker'] * int(segs_size)
 
     domains += dircrypt.generate_domains(num_per_dga)
     labels += ['dircrypt']*num_per_dga
@@ -75,16 +77,16 @@ def gen_malicious(num_per_dga=10000):
     kraken_to_gen = max(1, num_per_dga/2)
     domains += kraken.generate_domains(kraken_to_gen,
                                        datetime(2016, 1, 1), 'a', 3)
-    labels += ['kraken']*kraken_to_gen
+    labels += ['kraken']*int(kraken_to_gen)
     domains += kraken.generate_domains(kraken_to_gen,
                                        datetime(2016, 1, 1), 'b', 3)
-    labels += ['kraken']*kraken_to_gen
+    labels += ['kraken']*int(kraken_to_gen)
 
     # generate locky and divide between configs
     locky_gen = max(1, num_per_dga/11)
     for i in range(1, 12):
         domains += lockyv2.generate_domains(locky_gen, config=i)
-        labels += ['locky']*locky_gen
+        labels += ['locky']*int(locky_gen)
 
     # Generate pyskpa domains
     domains += pykspa.generate_domains(num_per_dga, datetime(2016, 1, 1))
@@ -101,7 +103,7 @@ def gen_malicious(num_per_dga=10000):
         domains += ramdo.generate_domains(segs_size,
                                           seed_num=random.randint(1, 1000000),
                                           length=rammdo_length)
-        labels += ['ramdo']*segs_size
+        labels += ['ramdo']*int(segs_size)
 
     # ramnit
     domains += ramnit.generate_domains(num_per_dga, 0x123abc12)
@@ -115,7 +117,7 @@ def gen_malicious(num_per_dga=10000):
                                           length=simda_length,
                                           tld=None,
                                           base=random.randint(2, 2**32))
-        labels += ['simda']*segs_size
+        labels += ['simda']*int(segs_size)
 
     return domains, labels
 

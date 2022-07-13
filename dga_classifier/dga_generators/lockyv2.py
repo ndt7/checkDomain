@@ -149,7 +149,7 @@ def generate_domains(nr, d=None, config=1):
 
     d = d if d else datetime.now()
 
-    for i in range(nr):
+    for i in range(int(nr)):
         ret.append(dga(d, config, i))
 
     return ret

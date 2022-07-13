@@ -3,13 +3,14 @@ import itertools
 import os
 import pickle
 import matplotlib
+
 matplotlib.use('Agg')
 import numpy as np
 
 import dga_classifier.bigram as bigram
 import dga_classifier.lstm as lstm
 
-from scipy import interp
+from scipy import *
 from sklearn.metrics import roc_curve, auc
 
 RESULT_FILE = 'results.pkl'
@@ -19,18 +20,19 @@ def run_experiments(isbigram=True, islstm=True, nfolds=10):
     bigram_results = None
     lstm_results = None
 
-# de so sanh bigram va lstm 
+    # de so sanh bigram va lstm
     if isbigram:
-        #chay ham run trong bigram 
-        
+        # chay ham run trong bigram
+
         bigram_results = bigram.run(nfolds=nfolds)
 
     if islstm:
         # chay ham run trong lstm 
         lstm_results = lstm.run(nfolds=nfolds)
-    
+
     # tra ve ket qua 
-    return bigram_results, lstm_results  
+    return bigram_results, lstm_results
+
 
 # tao hinh anh 
 def create_figs(isbigram=True, islstm=True, nfolds=10, force=False):
@@ -71,9 +73,9 @@ def create_figs(isbigram=True, islstm=True, nfolds=10, force=False):
     from matplotlib import pyplot as plt
     with plt.style.context('bmh'):
         plt.plot(lstm_binary_fpr, lstm_binary_tpr,
-                 label='LSTM (AUC = %.4f)' % (lstm_binary_auc, ), rasterized=True)
+                 label='LSTM (AUC = %.4f)' % (lstm_binary_auc,), rasterized=True)
         plt.plot(bigram_binary_fpr, bigram_binary_tpr,
-                 label='Bigrams (AUC = %.4f)' % (bigram_binary_auc, ), rasterized=True)
+                 label='Bigrams (AUC = %.4f)' % (bigram_binary_auc,), rasterized=True)
 
         plt.xlim([0.0, 1.0])
         plt.ylim([0.0, 1.05])
@@ -84,6 +86,7 @@ def create_figs(isbigram=True, islstm=True, nfolds=10, force=False):
 
         plt.tick_params(axis='both', labelsize=22)
         plt.savefig('results.png')
+
 
 def calc_macro_roc(fpr, tpr):
     """Calcs macro ROC on log scale"""
@@ -97,5 +100,6 @@ def calc_macro_roc(fpr, tpr):
 
     return all_fpr, mean_tpr / len(tpr), auc(all_fpr, mean_tpr) / len(tpr)
 
+
 if __name__ == "__main__":
-    create_figs(nfolds=1) # Run with 1 to make it fast
+    create_figs(nfolds=1)  # Run with 1 to make it fast

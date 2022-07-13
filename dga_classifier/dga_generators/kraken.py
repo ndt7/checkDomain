@@ -51,7 +51,7 @@ def generate_domain(index, date, seed_set, temp_file=True, tld_set_nr=1):
 
 def generate_domains(num_domains, date, seed, tld_set):
     domains = []
-    for i in range(num_domains):
+    for i in range(int(num_domains)):
         domains.append(generate_domain(i*2, date, seed, random.sample(range(2), 1)[0], tld_set))
 
     return domains

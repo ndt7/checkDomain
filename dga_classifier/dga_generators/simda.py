@@ -9,7 +9,7 @@ def generate_domains(nr_domains, length=10, tld="com", key = "1676d5775e05c50b46
 
     ret = []
 
-    for nr in range(nr_domains):
+    for nr in range(int(nr_domains)):
         domain = ""
         base += step
 

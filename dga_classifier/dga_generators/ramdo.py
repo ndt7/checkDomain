@@ -39,7 +39,7 @@ def generate_domain(seed_num, domain_iterator, length=0x10, add_tld=False):
 def generate_domains(num_domains, seed_num=5, length=0x10):
     domains = []
     domain_iterator = 0
-    for i in range(num_domains):
+    for i in range(int(num_domains)):
         domain, domain_iterator = generate_domain(seed_num, domain_iterator, length)
         domains.append(domain)
 
