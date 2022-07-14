@@ -4,18 +4,21 @@ from datetime import datetime
 from ctypes import c_uint
 import argparse
 
+
 def date_to_seed(date, seed):
-    dx = (date.day-1) // 10 
+    dx = (date.day - 1) // 10
     data = "{}.{}.{}.{:08x}".format(
-            dx if dx <= 2 else 2,
-            date.strftime("%b").lower(), 
-            date.year, 
-            seed)
+        dx if dx <= 2 else 2,
+        date.strftime("%b").lower(),
+        date.year,
+        seed)
     crc = c_uint(binascii.crc32(data.encode('ascii')))
     return crc
 
+
 def _int32(x):
     return int(0xFFFFFFFF & x)
+
 
 class MT19937:
 
@@ -54,15 +57,14 @@ class MT19937:
     def rand_int(self, lower, upper):
         r = self.extract_number()
         r &= 0xFFFFFFF
-        t = lower + float(r) / (2**28)*(upper - lower + 1) 
+        t = lower + float(r) / (2 ** 28) * (upper - lower + 1)
         t = int(t)
         return t
-        
 
-def generate_domains(nr_domains, date=None, 
-                     tlds = ["com", "net", "org", "info", "biz", "org"], 
+
+def generate_domains(nr_domains, date=None,
+                     tlds=["com", "net", "org", "info", "biz", "org"],
                      sandbox=False, seed=0):
-
     date = date if date else datetime.now()
 
     seed = date_to_seed(date, seed).value + sandbox
@@ -81,10 +83,9 @@ def generate_domains(nr_domains, date=None,
 
         if tlds:
             domain += "." + tlds[tld_nr]
-        
+
         ret.append(domain)
 
     return ret
-#import qakbot
-#qakbot.generate_domains(10000)
-
+# import qakbot
+# qakbot.generate_domains(10000)

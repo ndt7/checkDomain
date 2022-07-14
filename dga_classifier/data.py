@@ -8,7 +8,9 @@ from zipfile import ZipFile
 import pickle
 import os
 import random
+''''tldextract:  dung de trich xuat ten mien tu url'''
 import tldextract
+import pandas as pd
 
 from dga_classifier.dga_generators import banjori, corebot, cryptolocker, \
     dircrypt, kraken, lockyv2, pykspa, qakbot, ramdo, ramnit, simda
@@ -17,16 +19,18 @@ from dga_classifier.dga_generators import banjori, corebot, cryptolocker, \
 ALEXA_1M = 'http://s3.amazonaws.com/alexa-static/top-1m.csv.zip'
 
 # Our ourput file containg all the training data
+'''Tệp đầu ra của chúng tôi chứa tất cả dữ liệu đào tạo'''
 DATA_FILE = 'traindata.pkl'
 
-
+''' hàm này mục đích đề tải file về  '''
 def get_alexa(num, address=ALEXA_1M, filename='top-1m.csv'):
     """Grabs Alexa 1M - ban du lieu Alexa 1 trieu domain pho bien tren the gioi"""
     url = urlopen(address)
-    zipfile = ZipFile(io.StringIO(url.read()))
-
+    # zipfile = ZipFile(io.StringIO(url.read()))
+    zipfile = pd.read_csv('top-1m.csv')
     # zipfile = ZipFile(ALEXA_1M)
-    return [tldextract.extract(x.split(',')[1]).domain for x in
+
+    return [tldextract.extract(x.split(',')[1]).domain for x in   # tac dung trich xuat ten mien
             zipfile.read(filename).split()[:num]]
 
 
@@ -35,8 +39,10 @@ def gen_malicious(num_per_dga=10000):
     domains = []
     labels = []
 
-    # We use some arbitrary seeds to create domains with banjori
-    # Chúng tôi sử dụng một số hạt giống tùy ý để tạo tên miền với banjori
+    '''
+     We use some arbitrary seeds to create domains with banjori
+     Chúng tôi sử dụng một số hạt giống tùy ý để tạo tên miền với banjori
+    '''
     banjori_seeds = ['somestring', 'firetruck', 'bulldozer', 'airplane', 'racecar',
                      'apartment', 'laptop', 'laptopcomp', 'malwareisbad', 'crazytrain',
                      'thepolice', 'fivemonkeys', 'hockey', 'football', 'baseball',
@@ -142,6 +148,7 @@ def gen_data(force=False):
 
 def get_data(force=False):
     """Returns data and labels"""
+    ''' lay du lieu tra ve '''
     gen_data(force)
-
+    ''' tra ve '''
     return pickle.load(open(DATA_FILE))

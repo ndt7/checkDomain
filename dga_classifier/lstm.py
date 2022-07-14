@@ -1,4 +1,5 @@
 """Train and test LSTM classifier"""
+''' thu vien nay la gi'''
 import dga_classifier.data as data
 import numpy as np
 from keras.preprocessing import sequence
@@ -29,6 +30,8 @@ def build_model(max_features, maxlen):
     interation so lan batch_size ma model phai duyet trong 1 epock
     1 epoch la 1 lan duyet qua het cac du lieu trong tap huan luyen  
 '''
+
+
 def run(max_epoch=25, nfolds=10, batch_size=128):
     """Run train/test on logistic regression model"""
 

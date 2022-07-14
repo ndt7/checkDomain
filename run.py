@@ -3,6 +3,7 @@ import itertools
 import os
 import pickle
 import matplotlib
+from numpy import interp
 
 matplotlib.use('Agg')
 import numpy as np

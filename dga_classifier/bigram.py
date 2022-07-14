@@ -31,7 +31,7 @@ def run(max_epoch=50, nfolds=10, batch_size=128):
     labels = [x[0] for x in indata]
 
     # Create feature vectors
-    print("vectorizing data")
+    print("factorizing data")
     ngram_vectorizer = feature_extraction.text.CountVectorizer(analyzer='char', ngram_range=(2, 2))
     count_vec = ngram_vectorizer.fit_transform(X)
 

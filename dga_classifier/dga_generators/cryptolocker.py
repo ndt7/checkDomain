@@ -16,12 +16,13 @@ def generate_domain(year, month, day, length=32, tld=''):
     domain += tld
     return domain
 
+
 def generate_domains(num_domains, seed_num=100, length=32):
     """ Generates a list of domains based on a seed integer. """
     domains = []
     start_date = datetime(2016, 1, 1) + timedelta(days=seed_num)
     for i in range(int(num_domains)):
-        new_date = start_date + timedelta(days=i*2+1)
+        new_date = start_date + timedelta(days=i * 2 + 1)
         domains.append(generate_domain(new_date.year, new_date.month, new_date.day, length))
     return domains
 

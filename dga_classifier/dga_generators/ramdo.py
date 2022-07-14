@@ -3,7 +3,6 @@
 
 
 def generate_domain(seed_num, domain_iterator, length=0x10, add_tld=False):
-
     xor1 = 0
     sh1 = seed_num << 1
     domain_iterator += 1
@@ -36,6 +35,7 @@ def generate_domain(seed_num, domain_iterator, length=0x10, add_tld=False):
         return dom + ".org", domain_iterator
     return dom, domain_iterator
 
+
 def generate_domains(num_domains, seed_num=5, length=0x10):
     domains = []
     domain_iterator = 0
@@ -44,7 +44,6 @@ def generate_domains(num_domains, seed_num=5, length=0x10):
         domains.append(domain)
 
     return domains
-
 
 # import ramdo
 # ramdo.generate_domains(10, 5)
