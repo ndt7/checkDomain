@@ -3,7 +3,7 @@
 bigram la mo hinh ke hop cua 2 tu lien ke nhau tao thanh 
 '''
 
-import dga_classifier.data as data
+import services.data as data
 from keras.layers.core import Dense
 from keras.models import Sequential
 import sklearn

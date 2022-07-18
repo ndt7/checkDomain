@@ -1,6 +1,6 @@
 """Train and test LSTM classifier"""
 ''' thu vien nay la gi'''
-import dga_classifier.data as data
+import services.data as data
 import numpy as np
 from keras.preprocessing import sequence
 from keras.models import Sequential
@@ -35,27 +35,25 @@ def build_model(max_features, maxlen):
 def run(max_epoch=25, nfolds=10, batch_size=128):
     """Run train/test on logistic regression model"""
 
-    '''
-    ham lay du lieu get_data()
-    '''
+    """ham lay du lieu """
     indata = data.get_data()  # ham lay du lieu
 
     # Extract data and labels
-    '''X la du lieu cho vao train model
-        labels la nhan cua du lieu: 0 | 1 
-    '''
+    """X la du lieu cho vao train model labels la nhan cua du lieu: 0 | 1 """
     X = [x[1] for x in indata]  # lay du lieu train
     labels = [x[0] for x in indata]  # lay nhan
 
-    # Generate a dictionary of valid characters  /// xac thuc 
+    # Generate a dictionary of valid characters  /// xac thuc
+    """enumerate Trả về một đối tượng liệt kê."""
     valid_chars = {x: idx + 1 for idx, x in enumerate(set(''.join(X)))}
 
-    max_features = len(valid_chars) + 1  # max dac trung
-    maxlen = np.max([len(x) for x in X])
+    """"""
+    max_features = len(valid_chars) + 1  # tim do dai cua valid_chars
+    maxlen = np.max([len(x) for x in X])   # tim do dai cua x lon nhat
 
     # Convert characters to int and pad
     X = [[valid_chars[y] for y in x] for x in X]
-    X = sequence.pad_sequences(X, maxlen=maxlen)
+    X = sequence.pad_sequences(X, maxlen=maxlen)  # de dam bao rang tat ca cac chuoi trong cung 1 ds co cung do dai
 
     # Convert labels to 0-1    # chuan hoa du lieu 
     y = [0 if x == 'benign' else 1 for x in labels]

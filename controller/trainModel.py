@@ -8,13 +8,14 @@ from numpy import interp
 matplotlib.use('Agg')
 import numpy as np
 
-import dga_classifier.bigram as bigram
-import dga_classifier.lstm as lstm
+import services.bigram as bigram
+import services.lstm as lstm
 
 from scipy import *
 from sklearn.metrics import roc_curve, auc
 
 RESULT_FILE = 'results.pkl'
+
 
 def run_experiments(isbigram=True, islstm=True, nfolds=10):
     """Runs all experiments"""
